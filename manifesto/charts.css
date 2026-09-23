@@ -1,0 +1,528 @@
+/* Chart framework.
+   The visualisation language from the Defense Reformation build, rebuilt on
+   THOR's tokens: a mono figure tag over a display title, hairline rules that
+   draw themselves in, marks that reveal on entry, direct labels instead of a
+   legend where a legend can be avoided, and a sourced note under every figure.
+   Cream ground, ink marks, one signal red for the thing being argued. */
+
+.mf-body {
+  --ch-dur: 0.45s;                                  /* the base beat */
+  --ch-draw: calc(var(--ch-dur) * 2);               /* a line drawing itself */
+  --ch-step: 0.07s;                                 /* per-item stagger */
+  --ch-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ch-ink: var(--color-sheet-ink);
+  --ch-mark: var(--color-signal);
+  --ch-ink-red: var(--color-signal-deep);
+  --ch-muted: #566273;
+  --ch-hair: color-mix(in srgb, var(--color-sheet-ink) 22%, transparent);
+  --ch-surface: var(--color-paper);
+}
+
+/* --- Reveal primitives --------------------------------------------------
+   Everything is off until the figure enters the viewport and picks up
+   data-played, which charts.js sets. Without the script the figure renders in
+   its finished state, so nothing depends on JavaScript to be readable. */
+
+.ch[data-armed="true"] .ch-rise {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.ch[data-armed="true"] .ch-grow {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.ch[data-armed="true"] .ch-rise-y {
+  transform: scaleY(0);
+  transform-origin: bottom center;
+}
+
+.ch[data-armed="true"] .ch-draw {
+  stroke-dashoffset: var(--len, 1000);
+}
+
+.ch[data-armed="true"] .ch-rise,
+.ch[data-armed="true"] .ch-grow,
+.ch[data-armed="true"] .ch-rise-y {
+  transition: opacity var(--ch-dur) var(--ch-ease) var(--d, 0s),
+    transform var(--ch-dur) var(--ch-ease) var(--d, 0s);
+}
+
+.ch[data-armed="true"] .ch-draw {
+  transition: stroke-dashoffset var(--ch-draw) linear var(--d, 0s);
+}
+
+.ch[data-played="true"] .ch-rise { opacity: 1; transform: none; }
+.ch[data-played="true"] .ch-grow,
+.ch[data-played="true"] .ch-rise-y { transform: scale(1); }
+.ch[data-played="true"] .ch-draw { stroke-dashoffset: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ch[data-armed="true"] .ch-rise { opacity: 1; transform: none; }
+  .ch[data-armed="true"] .ch-grow,
+  .ch[data-armed="true"] .ch-rise-y { transform: scale(1); }
+  .ch[data-armed="true"] .ch-draw { stroke-dashoffset: 0; }
+  .ch * { transition: none !important; }
+}
+
+/* --- Figure chrome, shared with the infographics ------------------------ */
+
+.ch text { font-family: var(--font-sans); fill: var(--ch-ink); }
+
+/* Mono for anything that is a reading off the axis. */
+.ch .c-tick,
+.ch .c-cat,
+.ch .c-val,
+.ch .c-tag {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.ch .c-tick { font-size: 11px; fill: var(--ch-muted); }
+.ch .c-cat { font-size: 12px; fill: var(--ch-ink); }
+.ch .c-val { font-size: 13px; font-weight: 600; fill: var(--ch-ink); }
+
+.ch .c-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  fill: var(--ch-muted);
+}
+
+.ch .c-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  fill: var(--ch-ink);
+}
+
+.ch .c-lab {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  fill: var(--ch-ink);
+}
+
+.ch .c-sub { font-size: 12.5px; fill: var(--ch-muted); }
+.ch .c-note { font-size: 12px; fill: var(--ch-muted); }
+
+/* Marks */
+.ch .c-hair { stroke: var(--ch-hair); stroke-width: 1; }
+.ch .c-rule { stroke: var(--ch-ink); stroke-width: 2; }
+.ch .c-tickline { stroke: var(--ch-muted); stroke-width: 1.5; }
+.ch .c-fill { fill: var(--ch-ink); }
+.ch .c-fill-mark { fill: var(--ch-mark); }
+.ch .c-outline { fill: none; stroke: var(--ch-ink); stroke-width: 1.5; }
+.ch .c-outline-mark { fill: none; stroke: var(--ch-mark); stroke-width: 1.5; }
+.ch .c-lead { stroke: var(--ch-muted); stroke-width: 1; }
+.ch .c-dash { stroke-dasharray: 6 5; }
+.ch .c-surface { fill: var(--ch-surface); }
+.ch .c-band { fill: color-mix(in srgb, var(--ch-ink) 7%, transparent); }
+.ch .c-band-mark { fill: color-mix(in srgb, var(--ch-mark) 10%, transparent); }
+.ch .c-dot { fill: var(--ch-ink); }
+.ch .c-dot-mark { fill: var(--ch-mark); }
+
+.ch .c-val-mark { fill: var(--ch-ink-red); }
+.ch .c-lab-mark { fill: var(--ch-ink-red); }
+
+/* A bar drawn as a stroked line, so stroke-dashoffset can draw it in. */
+.ch .c-bar { stroke: var(--ch-ink); stroke-width: 12; }
+.ch .c-bar-mark { stroke: var(--ch-mark); stroke-width: 12; }
+
+/* The dashed lasso the reference draws around the group it is arguing about. */
+.ch .c-lasso {
+  fill: none;
+  stroke: var(--ch-mark);
+  stroke-width: 1.5;
+  stroke-dasharray: 7 5;
+}
+
+.ch .c-tag-mark { fill: var(--ch-ink-red); }
+
+/* The company column. Several of the reference's "logos" are plain wordmarks,
+   so these are set in the display face rather than approximated as artwork.
+   Drop real SVG marks in here when they can be sourced; nothing about the
+   layout assumes type. */
+.ch .c-wordmark {
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  fill: var(--ch-ink);
+}
+
+/* A legend only where direct labelling cannot carry it. */
+.ch .c-key { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; fill: var(--ch-ink); }
+
+/* --- Narrow rendition ---------------------------------------------------
+   A 960-wide SVG on a phone shows the reader about a third of itself and
+   asks them to pan in two axes to see the rest. The charts are generated,
+   so each one also emits a plain HTML rendition that reflows: same data,
+   same tokens, no panning, type at its real size. */
+
+.ch-narrow { display: none; }
+
+@media (max-width: 52rem) {
+  .ch-wide { display: none; }
+  .ch-narrow { display: block; }
+  /* Nothing to pan, so the frame stops being a scroll container. */
+  .ch:has(.ch-narrow) .ig-frame { overflow: visible; max-height: none; }
+  .ch:has(.ch-narrow) .ig-scroll { display: none; }
+}
+
+.cn-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ch-ink);
+  margin: 0 0 0.25rem;
+}
+
+.cn-rule {
+  height: 2px;
+  background: var(--ch-ink);
+  margin: 0.75rem 0 1.25rem;
+  transform-origin: left center;
+}
+
+.cn-list { margin: 0; padding: 0; list-style: none; }
+
+.cn-row {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--ch-hair);
+}
+
+.cn-row:first-child { border-top: 1px solid var(--ch-hair); }
+
+.cn-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ch-ink);
+}
+
+.cn-name[data-mark="true"] { color: var(--ch-ink-red); }
+
+.cn-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+  margin-top: 0.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--ch-muted);
+}
+
+/* These are spans so they can sit inside a list item without extra wrappers,
+   which means they need an explicit display or the bars collapse to nothing. */
+.cn-track {
+  display: block;
+  position: relative;
+  height: 0.75rem;
+  margin-top: 0.45rem;
+  background: color-mix(in srgb, var(--ch-ink) 7%, transparent);
+}
+
+.cn-track[data-outline="true"] {
+  background: none;
+  border: 1.5px solid var(--ch-ink);
+}
+
+.cn-fill {
+  display: block;
+  height: 100%;
+  background: var(--ch-ink);
+  transform-origin: left center;
+}
+
+.cn-fill[data-mark="true"] { background: var(--ch-mark); }
+
+/* A generated quantity is drawn hollow, so it never reads as a recorded one. */
+.cn-fill[data-hollow="true"] {
+  background: none;
+  border: 1.5px solid var(--ch-ink);
+}
+
+.cn-figs {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.cn-val {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ch-ink);
+}
+
+.cn-val[data-mark="true"] { color: var(--ch-ink-red); }
+
+.cn-sub {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--ch-muted);
+}
+
+/* A share caption on its own line under a bar. */
+.cn-row > .cn-sub { display: block; margin-top: 0.35rem; }
+
+.cn-group {
+  margin-top: 1.5rem;
+  padding-top: 0.9rem;
+  border-top: 2px solid var(--ch-ink);
+}
+
+.cn-group:first-child { margin-top: 0; }
+
+.cn-group-t {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ch-muted);
+  margin: 0;
+}
+
+.cn-stat {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ch-ink);
+  margin: 0.3rem 0 0;
+}
+
+.cn-stat[data-mark="true"] { color: var(--ch-ink-red); }
+
+/* The supply state under a station card in the framing figure. */
+.cn-stat + .cn-sub { display: block; margin: 0.25rem 0 0; }
+.cn-sub[data-mark="true"] { color: var(--ch-ink-red); }
+
+.cn-stat span {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--ch-muted);
+  margin-left: 0.4rem;
+}
+
+.cn-note {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ch-muted);
+  margin: 1.1rem 0 0;
+}
+
+.cn-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  margin-top: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--ch-ink);
+}
+
+.cn-key i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 0.35rem;
+  vertical-align: -1px;
+  background: var(--ch-mark);
+}
+
+.cn-key i[data-outline="true"] { background: none; border: 1.5px solid var(--ch-ink); }
+
+/* The narrow rendition reveals as one block. */
+.ch[data-armed="true"] .ch-narrow { opacity: 0; transform: translateY(12px); transition: opacity var(--ch-dur) var(--ch-ease), transform var(--ch-dur) var(--ch-ease); }
+.ch[data-played="true"] .ch-narrow { opacity: 1; transform: none; }
+
+/* --- Detail on demand ---------------------------------------------------
+   Every secondary text column that used to sit on the canvas now lives behind
+   a hit area: the chart carries the shape and the number, and the reader asks
+   for the sentence. The same markup serves mouse, touch and keyboard, and the
+   <title> inside each hit keeps the detail reachable with JavaScript off. */
+
+.ch .c-hit { fill: transparent; cursor: pointer; }
+.ch .c-hit:hover { fill: color-mix(in srgb, var(--ch-ink) 6%, transparent); }
+.ch .c-hit[data-on="true"] { fill: color-mix(in srgb, var(--ch-mark) 8%, transparent); }
+.ch .c-hit:focus-visible { outline: 2px solid var(--ch-mark); outline-offset: -2px; }
+
+/* The figure's own foot: the cue on the left, the sources on the right, and
+   nothing else. The paragraph that used to restate the chart is gone. */
+.ig-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  margin-top: 0.9rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--ch-hair);
+}
+
+.ig-src {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--ch-muted);
+}
+
+.ig-src > span {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: 0.35rem;
+}
+
+.ig-src .cite { margin-right: 0.5rem; }
+
+.ch-detail {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.ch-detail-cue {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.9;
+  color: var(--ch-muted);
+  white-space: nowrap;
+}
+
+.ch-detail-t {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ch-muted);
+}
+
+.ch-detail[data-on="true"] .ch-detail-cue { color: var(--ch-ink-red); }
+.ch-detail[data-on="true"] .ch-detail-t { color: var(--ch-ink); }
+
+/* A narrow row is the same control, written in HTML. */
+.cn-row[data-detail] { cursor: pointer; }
+.cn-row[data-detail]:hover { background: color-mix(in srgb, var(--ch-ink) 4%, transparent); }
+.cn-row[data-detail]:focus-visible { outline: 2px solid var(--ch-mark); outline-offset: -2px; }
+.cn-row[data-on="true"] { background: color-mix(in srgb, var(--ch-mark) 6%, transparent); }
+
+/* --- The detail card ----------------------------------------------------
+   A single line under a wide frame puts the text a long way from the thing it
+   describes and sets it at a measure nobody wants to read. A click-reveal
+   figure gets a card instead: anchored beside the node, at a readable measure,
+   with the comparables and the angle on them labelled rather than run
+   together. The bar stays for figures that reveal on hover, where the text is
+   one short row's worth. */
+
+/* Detail card ------------------------------------------------------------
+   One line under a 960-wide frame put the words a long way from the thing
+   they described, on a measure no one reads. The card keeps the detail at a
+   readable width, labels its parts, and sits in the flow under the node it
+   belongs to, so it pushes the caption down rather than covering it. */
+.ch-card-slot { display: none; }
+.ch-card-slot[data-open="true"] { display: block; }
+
+.ch-card {
+  position: relative;
+  width: 100%;
+  max-width: 52rem;
+  margin: 0.9rem 0 0.2rem;
+  padding: 1.25rem 3rem 1.35rem 1.4rem;
+  background: color-mix(in srgb, var(--ch-ink) 7%, var(--ch-surface));
+  border: 1px solid color-mix(in srgb, var(--ch-ink) 26%, transparent);
+  border-top: 3px solid var(--ch-mark);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.ch-card[data-open="true"] { opacity: 1; transform: none; }
+
+.ch-card-t {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--ch-ink);
+  margin: 0;
+}
+
+.ch-card-l {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ch-ink-red);
+  margin: 1rem 0 0.3rem;
+}
+
+.ch-card-b {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ch-ink);
+  margin: 0;
+  max-width: 44rem;
+}
+
+/* An unlabelled body still needs air under the heading. */
+.ch-card-b:first-child { margin-top: 0.7rem; }
+
+.ch-card-x {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  line-height: 1;
+  color: var(--ch-muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.ch-card-x:hover { color: var(--ch-ink); }
+.ch-card-x:focus-visible { outline: 2px solid var(--ch-mark); }
+
+/* Under a row of the narrow list the card runs the full width of the list. */
+.cn-detail-li { list-style: none; }
+.cn-detail-li .ch-card { margin: 0 0 0.9rem; }
+
+@media (max-width: 40rem) {
+  .ch-card { padding: 1.1rem 2.6rem 1.15rem 1.1rem; }
+  .ch-card-t { font-size: 1.125rem; }
+  .ch-card-b { font-size: 0.9375rem; }
+}
+
+@media (prefers-reduced-motion: reduce) { .ch-card { transition: none; } }

@@ -90,7 +90,7 @@
 
 .ig svg {
   --ig-ink: var(--color-sheet-ink);
-  --ig-muted: #55585c;      /* 6.8:1 on the sheet, unlike the source #6a6a6a */
+  --ig-muted: #566273;      /* 6.8:1 on the sheet, unlike the source #6a6a6a */
   --ig-hair: #b4b4b4;
   --ig-mark: var(--color-signal);
   --ig-surface: var(--color-paper);
