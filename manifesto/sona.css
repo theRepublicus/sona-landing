@@ -1,0 +1,111 @@
+/* Sona overrides, loaded after the forked THOR sheets.
+   The palette swap (red signal to soft blue, near-black to navy, cream to cool
+   white) lives in the token values themselves; this file only carries what the
+   fork needed that the original page did not have. */
+
+/* Wordmark in place of the THOR logo SVG. */
+.sn-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #f3f6fb;
+  text-decoration: none;
+}
+
+.sn-mark i {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: #8fb6ea;
+  box-shadow: 0 0 0 4px color-mix(in srgb, #8fb6ea 22%, transparent);
+}
+
+.sn-mark--lg { font-size: 2rem; }
+
+/* On the navy band the soft blue is too light to carry white text. */
+[data-tone="dark"] .mf-btn--solid,
+[data-tone="dark"] .mf-btn--solid:hover,
+[data-tone="dark"] .mf-btn--solid:focus-visible {
+  color: #0f1a2a;
+}
+
+/* Stat figures: the source data here is a handful of headline counts, so the
+   figure is a row of tiles rather than a chart. */
+.sn-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--color-sheet-edge);
+  border: 1px solid var(--color-sheet-edge);
+}
+
+.sn-stats li {
+  padding: clamp(1.1rem, 2.2vw, 1.75rem);
+  background: var(--color-sheet);
+}
+
+.sn-stat-v {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-signal);
+}
+
+.sn-stat-l {
+  display: block;
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: var(--color-sheet-eyebrow);
+}
+
+.sn-fig-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  max-width: 34ch;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.sn-fig-note {
+  max-width: 64ch;
+  margin: 1.25rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-sheet-copy);
+}
+
+.sn-fig-src {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin: 1.25rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--color-sheet-edge);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-sheet-eyebrow);
+}
+
+/* The compiled sheet has no max-xl variant, so the desktop nav hides here. */
+@media (max-width: 79.99rem) {
+  .sn-nav { display: none; }
+}

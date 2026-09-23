@@ -1,0 +1,173 @@
+/* Infographics.
+   The SVGs are used as supplied: same geometry, same labels, same structure.
+   Only the presentation classes are remapped, from the source files' white
+   ground, Times New Roman and flat greys onto the page's own tokens, so the
+   figures sit in the document instead of on top of it. Red is reserved for the
+   one element each figure wants you to notice. */
+
+.ig {
+  margin: clamp(2.5rem, 5vw, 4.5rem) 0 0;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  background: var(--color-sheet);
+  border: 1px solid var(--color-sheet-edge);
+  scroll-margin-top: 7.5rem;
+}
+
+.ig-num {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-signal-deep);
+  margin: 0 0 0.9rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 2px solid var(--color-sheet-ink);
+}
+
+/* All three SVGs are drawn on a 960-wide canvas, so that is the size they
+   render at: never stretched, never shrunk. Stretching was pushing 21px titles
+   to 32px and making the tallest diagram 130% of a laptop viewport; shrinking
+   was putting 13px labels at 8.4px on a phone. Narrow viewports scroll the
+   frame instead, which keeps every label at its designed size. */
+.ig-frame {
+  position: relative;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+/* A 960x720 diagram cannot fit a phone at its drawn size, and shrinking it is
+   what made the labels illegible. So below the breakpoint the frame becomes a
+   bounded window the reader pans inside, rather than a full-height block that
+   pushes the argument off the page: the tallest diagram was running to 139% of
+   an Android viewport. */
+@media (max-width: 60rem) {
+  .ig { padding: 1rem; }
+
+  .ig-frame {
+    max-height: 56vh;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.ig-frame svg {
+  display: block;
+  width: 960px;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* A fade on the right edge signals there is more diagram off-screen. */
+.ig[data-scrolls="true"] .ig-frame {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
+}
+
+.ig[data-scrolls="true"] .ig-frame:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.ig-scroll {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-sheet-eyebrow);
+  margin: 0.6rem 0 0;
+}
+
+.ig[data-scrolls="true"] .ig-scroll { display: block; }
+
+@media (max-width: 60rem) {
+  .ig[data-scrolls="true"] .ig-scroll::after { content: " and up"; }
+}
+/* --- SVG token remap ---------------------------------------------------- */
+
+.ig svg {
+  --ig-ink: var(--color-sheet-ink);
+  --ig-muted: #55585c;      /* 6.8:1 on the sheet, unlike the source #6a6a6a */
+  --ig-hair: #b4b4b4;
+  --ig-mark: var(--color-signal);
+  --ig-surface: var(--color-paper);
+}
+
+.ig svg text {
+  font-family: var(--font-sans);
+  fill: var(--ig-ink);
+}
+
+.ig .t-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  fill: var(--ig-ink);
+}
+
+.ig .t-lab { font-size: 15px; fill: var(--ig-ink); }
+
+.ig .t-labb,
+.ig .t-val {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  fill: var(--ig-ink);
+}
+
+.ig .t-cap { font-size: 14px; fill: var(--ig-muted); }
+.ig .t-sub { font-size: 13px; fill: var(--ig-muted); }
+
+.ig .t-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  fill: var(--ig-muted);
+}
+
+/* The single emphasis in each figure. */
+.ig .t-call {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  fill: var(--color-signal-deep);
+}
+
+.ig .t-inv { font-family: var(--font-display); font-size: 15px; font-weight: 500; fill: var(--color-white); }
+.ig .t-invs { font-size: 13px; fill: var(--color-white); }
+
+.ig .bg { fill: none; }
+.ig .halo { paint-order: stroke fill; stroke: var(--color-sheet); stroke-width: 4px; stroke-linejoin: round; }
+
+.ig .ln { stroke: var(--ig-hair); stroke-width: 2; fill: none; }
+.ig .ln-hero { stroke: var(--ig-ink); stroke-width: 2.6; fill: none; }
+.ig .axis { stroke: var(--ig-hair); stroke-width: 1.2; fill: none; }
+.ig .guide { stroke: var(--ig-hair); stroke-width: 1.2; stroke-dasharray: 4 4; fill: none; }
+
+.ig .dot, .ig .ah { fill: var(--ig-muted); }
+
+/* The wedges are a decorative magnitude cue rather than a mark carrying a
+   value, so they sit back from the text weight instead of competing with it. */
+.ig .gr { fill: color-mix(in srgb, var(--ig-ink) 34%, transparent); }
+.ig .dot-hero { fill: var(--ig-ink); }
+.ig .blk { fill: var(--ig-mark); }
+
+.ig .box { fill: var(--ig-surface); stroke: var(--ig-ink); stroke-width: 1.5; }
+.ig .box-hero { fill: var(--ig-surface); stroke: var(--ig-mark); stroke-width: 2.8; }
+.ig .box-soft { fill: var(--ig-surface); stroke: var(--ig-hair); stroke-width: 1.2; }
+.ig .box-fill { fill: color-mix(in srgb, var(--ig-ink) 8%, var(--ig-surface)); stroke: var(--ig-ink); stroke-width: 1.5; }
+.ig .box-goal { fill: var(--ig-surface); stroke: var(--ig-ink); stroke-width: 1.5; stroke-dasharray: 6 4; }
+
+.ig .region { fill: none; stroke: var(--ig-mark); stroke-width: 1.4; stroke-dasharray: 7 5; }
+.ig .call { fill: var(--ig-surface); stroke: var(--ig-mark); stroke-width: 1.2; stroke-dasharray: 6 5; }
+.ig .arr { stroke: var(--ig-muted); stroke-width: 1.5; fill: none; }
+.ig .arr-d { stroke: var(--ig-muted); stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+.ig .tick { stroke: var(--ig-muted); stroke-width: 2; }
+.ig .tick-hero { stroke: var(--ig-ink); stroke-width: 1.2; }

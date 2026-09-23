@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Introducing Sona</title>
+    <meta
+      name="description"
+      content="Sona is an open-source network that brings researchers, clinicians, developers and patients together to advance medical AI, beginning with medical imaging."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f1a2a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%238fb6ea'/%3E%3C/svg%3E"
+    />
+    <!-- Stamped before first paint so the reveal styles only ever hide
+         content when the script that un-hides it is going to run. -->
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <link rel="stylesheet" href="../_astro/index.css" />
+    <link rel="stylesheet" href="manifesto.css" />
+    <link rel="stylesheet" href="infographics.css" />
+    <link rel="stylesheet" href="citations.css" />
+    <link rel="stylesheet" href="sona.css" />
+  </head>
+  <body class="mf-body flex min-h-dvh flex-col font-sans antialiased">
+    <header
+      data-site-header
+      data-solid="false"
+      class="fixed w-full top-0 z-50 border-b border-transparent transition-colors duration-300 data-[solid=true]:border-white/10 data-[solid=true]:bg-ink/95 data-[solid=true]:backdrop-blur"
+    >
+      <div class="flex items-center justify-between px-3 lg:px-gutter py-3 lg:py-5">
+        <a class="sn-mark focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4" href="#top" aria-label="Sona, back to top"><i aria-hidden="true"></i>SONA</a>
+        <div class="flex items-center gap-6">
+          <nav aria-label="Primary" class="sn-nav">
+            <ul class="flex items-center gap-4">
+              <li><a class="flex items-center px-2 py-3.5 text-sm font-medium uppercase leading-[12px] tracking-nav text-white hover:text-white/70" aria-current="page" href="#top">Manifesto</a></li>
+              <li><a class="flex items-center px-2 py-3.5 text-sm font-medium uppercase leading-[12px] tracking-nav text-white/70 hover:text-white" href="#s-evidence">Evidence</a></li>
+              <li><a class="flex items-center px-2 py-3.5 text-sm font-medium uppercase leading-[12px] tracking-nav text-white/70 hover:text-white" href="#s-tools">What we will build</a></li>
+            </ul>
+          </nav>
+          <a
+            class="transition-colors focus-visible:outline-2 focus-visible:outline-white max-md:text-[10px] flex items-center gap-1 rounded border border-white/20 bg-ink px-6 py-3.5 text-sm font-medium uppercase leading-[12px] tracking-cta text-white hover:bg-white/10 focus-visible:outline-offset-2"
+            href="#close"
+            >Get involved<svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-3.5 shrink-0" aria-hidden="true"><path d="M7 10C7 8.34315 8.34315 7 10 7M10 7C8.34315 7 7 5.65685 7 4M10 7H4" stroke="currentColor"></path></svg
+          ></a>
+        </div>
+      </div>
+    </header>
+    <script type="module">
+      const h = document.querySelector("[data-site-header]");
+      const s = () => (h.dataset.solid = String(window.scrollY > 8));
+      s();
+      window.addEventListener("scroll", s, { passive: true });
+    </script>
+
+    <main class="flex flex-1 flex-col" id="top">
+      <article class="mf-article">
+        <!-- Masthead ------------------------------------------------------ -->
+        <header class="mf-wrap">
+          <p data-reveal class="mf-eyebrow">Sona / 01&ndash;05</p>
+          <h1 data-reveal class="mf-title" style="--reveal-delay: 80ms">
+            Building medical intelligence together.
+          </h1>
+          <p data-reveal class="mf-standfirst" style="--reveal-delay: 160ms">
+            How open models and patient participation will advance medical AI.
+          </p>
+          <dl data-reveal class="mf-meta" style="--reveal-delay: 240ms">
+            <div>
+              <dt>Written by</dt>
+              <dd>Jack Ai-Leung</dd>
+            </div>
+            <div>
+              <dt>Published</dt>
+              <dd>23 September 2026</dd>
+            </div>
+          </dl>
+          <p class="mf-scrollcue">
+            Scroll to read <span aria-hidden="true">&darr;</span>
+          </p>
+        </header>
+
+        <div class="mf-wrap"><hr class="mf-rule" /></div>
+
+        <!-- Lead ---------------------------------------------------------- -->
+        <div class="mf-band" data-tone="light">
+        <section class="mf-wrap mf-grid" aria-labelledby="lead-title">
+          <nav class="mf-contents" aria-label="Sections">
+            <h2>Contents</h2>
+            <ol>
+              <li><a href="#s-problem"><b>01</b> Disease is global; our capacity to fight it is fragmented</a></li>
+              <li><a href="#s-beliefs"><b>02</b> Science needs open models, global collaboration and patient participation</a></li>
+              <li><a href="#s-evidence"><b>03</b> Crowds and coalitions are already building medical intelligence</a></li>
+              <li><a href="#s-approach"><b>04</b> Sona will begin with imaging problems that can be measured</a></li>
+              <li><a href="#s-tools"><b>05</b> Sona will turn these beliefs into tools people can use</a></li>
+            </ol>
+          </nav>
+          <div class="mf-main">
+            <p class="mf-kicker">The short version</p>
+            <h2 id="lead-title" class="mf-h2">Disease crosses every border. The knowledge to fight it does not.</h2>
+            <div class="mf-prose">
+              <p>
+                We are building Sona, an open-source network that brings researchers, clinicians, developers and patients together to advance medical AI. Beginning with medical imaging, we will develop openly available models and translate validated capabilities into free tools that help people understand their health.
+              </p>
+              <p>
+                Disease affects people across every border, yet the knowledge and resources needed to fight it remain divided among institutions, countries and proprietary systems. Medical histories are scattered across providers, researchers face difficult negotiations for data access, and patients have limited influence over the science that could change their lives. This fragmentation constrains both the people capable of contributing to discovery and the people who could benefit from it.
+              </p>
+              <p>
+                We believe open source offers a foundation for organising this work globally. When models, methods and evaluations are available for inspection, researchers can reproduce findings, challenge weaknesses and extend one another&rsquo;s discoveries. A contribution from one team can become the starting point for thousands of others, allowing scientific progress to accumulate across institutions and generations.
+              </p>
+              <p>
+                The opportunity is to connect this collaborative model with patients&rsquo; growing ability to understand their own biology. As people gain access to their scans, health records and information about their habits, we expect them to take a greater role in managing their care and supporting research. Useful tools can give patients an immediate benefit while creating a voluntary path for them to contribute to broader scientific progress.
+              </p>
+            </div>
+          </div>
+        </section>
+        </div>
+
+        <!-- 01 ------------------------------------------------------------ -->
+        <div class="mf-band" data-tone="dark">
+        <div class="mf-wrap"><hr class="mf-rule" /></div>
+
+        <section class="mf-wrap mf-grid" id="s-problem" aria-labelledby="t-problem">
+          <div></div>
+          <div class="mf-main">
+            <p class="mf-kicker">Section 01</p>
+            <h2 id="t-problem" class="mf-h2">Disease is global. Our capacity to fight it is fragmented.</h2>
+            <ul class="beliefs">
+              <li>
+                <strong>Patients live with disease every day.</strong> Their scans, experiences and knowledge remain scattered across institutions and borders.
+              </li>
+              <li>
+                <strong>Scientific funding depends too heavily on who holds capital</strong> and whose ideas they recognise. Patients with the greatest stake in a breakthrough have too little influence over what gets built.
+              </li>
+              <li>
+                <strong>Closed models concentrate capability.</strong> Discoveries that could advance humanity remain inaccessible to the people who could improve them.
+              </li>
+              <li>
+                <strong>Care will become increasingly self-directed</strong> as people gain insight into their biology and habits. Patients need trustworthy tools to turn that understanding into informed action.
+              </li>
+            </ul>
+          </div>
+        </section>
+        </div>
+
+        <!-- 02 ------------------------------------------------------------ -->
+        <div class="mf-band" data-tone="light">
+        <div class="mf-wrap"><hr class="mf-rule" /></div>
+
+        <section class="mf-wrap mf-grid" id="s-beliefs" aria-labelledby="t-beliefs">
+          <div></div>
+          <div class="mf-main">
+            <p class="mf-kicker">Section 02</p>
+            <h2 id="t-beliefs" class="mf-h2">Science needs open models, global collaboration and patient participation.</h2>
+            <ul class="beliefs">
+              <li>
+                <strong>Open models make progress cumulative.</strong> Every team should be able to inspect, test and improve the work that came before it. Shared capability lets discoveries travel across borders.
+              </li>
+              <li>
+                <strong>Competition needs a common standard of proof.</strong> Reward accurate results, reproducible findings and rigorous attempts to disprove accepted claims. <a class="cite" href="#ref-luna16" data-ref="luna16">LUNA16 showed how competing imaging models could become stronger through combination<sup class="cite-n">1</sup></a>.
+              </li>
+              <li>
+                <strong>Patients need a voice in financing discovery.</strong> A Kickstarter for science could connect committed patient communities with new teams, releasing funding against independently verified milestones.
+              </li>
+              <li>
+                <strong>Patient experience deserves a path into evidence.</strong> Communities can surface questions, compare experiences and identify promising hypotheses. <a class="cite" href="#ref-countmein" data-ref="countmein">Count Me In demonstrates that patients can become active contributors to research<sup class="cite-n">2</sup></a>.
+              </li>
+              <li>
+                <strong>Tokens can coordinate sustained participation.</strong> Well-designed rewards can support research contributions, follow-up data and replication across a global community. Reward quality and honesty; make accurate negative results valuable.
+              </li>
+            </ul>
+            <details class="research">
+              <summary>Supporting research (2)</summary>
+              <ol class="refs">
+                <li class="ref" id="ref-luna16">
+                  <span class="ref-n">01</span>
+                  <div>
+                    <p class="ref-t">LUNA16 (Lung Nodule Analysis 2016)</p>
+                    <p class="ref-claim">A public benchmark for automatic pulmonary nodule detection in chest CT, built on the LIDC-IDRI collection. The organisers compared the submitted systems on a common evaluation and found that combining the leading systems detected nodules better than any single system did.</p>
+                    <ul class="ref-srcs"><li><a href="https://luna16.grand-challenge.org/" target="_blank" rel="noopener noreferrer">luna16.grand-challenge.org ↗</a></li><li><a href="https://arxiv.org/abs/1612.08012" target="_blank" rel="noopener noreferrer">arXiv 1612.08012 ↗</a></li></ul>
+                  </div>
+                </li>
+                <li class="ref" id="ref-countmein">
+                  <span class="ref-n">02</span>
+                  <div>
+                    <p class="ref-t">Count Me In</p>
+                    <p class="ref-claim">A patient-partnered research initiative in which people with cancer contribute their medical records, samples and experiences directly to research, and the resulting data is shared with the wider scientific community.</p>
+                    <ul class="ref-srcs"><li><a href="https://joincountmein.org/" target="_blank" rel="noopener noreferrer">joincountmein.org ↗</a></li></ul>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </div>
+        </section>
+        </div>
+
+        <!-- 03 ------------------------------------------------------------ -->
+        <div class="mf-band" data-tone="dark">
+        <div class="mf-wrap"><hr class="mf-rule" /></div>
+
+        <section class="mf-wrap mf-grid" id="s-evidence" aria-labelledby="t-evidence">
+          <div></div>
+          <div class="mf-main">
+            <p class="mf-kicker">Section 03</p>
+            <h2 id="t-evidence" class="mf-h2">Crowds and coalitions are already building medical intelligence.</h2>
+            <ul class="beliefs">
+              <li>
+                <strong>Crowdsourced imaging annotation works when the task is structured.</strong> A <a class="cite" href="#ref-lus" data-ref="lus">gamified lung ultrasound study<sup class="cite-n">3</sup></a> collected 21,154 annotations from 214 annotators in 2.5 days. Aggregated crowd annotations agreed with the reference standard better than individual experts on the study&rsquo;s B-line segmentation metrics. This supports carefully structured annotation tasks; it does not establish that untrained crowds can interpret arbitrary medical scans.
+              </li>
+              <li>
+                <strong>Open challenges turn clinical questions into measurable targets.</strong> The <a class="cite" href="#ref-midrc" data-ref="midrc">MIDRC mRALE Mastermind challenge<sup class="cite-n">4</sup></a> asked teams to build AI that predicts COVID-19 severity from chest radiographs. <a class="cite" href="#ref-luna25" data-ref="luna25">LUNA25<sup class="cite-n">5</sup></a> set a lung nodule malignancy task around roughly 4,000 annotated low-dose chest CT examinations.
+              </li>
+              <li>
+                <strong>New models are being built across institutions without pooling records.</strong> A <a class="cite" href="#ref-exam" data-ref="exam">federated learning study<sup class="cite-n">6</sup></a> trained a model on 16,148 cases from 20 institutions, combining chest X-rays, laboratory results, vital signs and age, to predict how much oxygen support a patient would need 24 and 72 hours after arriving at hospital, including the risk of ventilation or death.
+              </li>
+              <li>
+                <strong>Clinical trial recruitment is already a patient-facing market.</strong> Services such as <a class="cite" href="#ref-antidote" data-ref="antidote">Antidote<sup class="cite-n">7</sup></a> and <a class="cite" href="#ref-power" data-ref="power">Power<sup class="cite-n">8</sup></a> help patients find studies they may be eligible for, which is the same connection between patient communities and research that Sona is built around.
+              </li>
+              <li>
+                <strong>Early-stage drug research is the next frontier for patient participation,</strong> and the area where patient-backed funding could matter most.
+              </li>
+              <li>
+                <a class="cite" href="#ref-bio" data-ref="bio"><strong>BIO Protocol showed what is possible by building a global coalition</strong><sup class="cite-n">9</sup></a>: patient and researcher communities organised to fund and steer early-stage science together.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mf-wrap mf-figure-wrap" aria-label="Figure 01">
+          <figure class="ig" id="fig-01">
+            <p class="ig-num">Fig 01</p>
+            <p class="sn-fig-title">A structured crowd task produced expert-grade lung ultrasound annotation in days.</p>
+            <ul class="sn-stats">
+              <li><span class="sn-stat-v">21,154</span><span class="sn-stat-l">Annotations collected</span></li>
+              <li><span class="sn-stat-v">214</span><span class="sn-stat-l">Annotators</span></li>
+              <li><span class="sn-stat-v">2.5</span><span class="sn-stat-l">Days to collect</span></li>
+            </ul>
+            <p class="sn-fig-note">Aggregated crowd annotations agreed with the reference standard better than individual experts on B-line segmentation. The result holds for a carefully structured task, not for open-ended scan interpretation.</p>
+            <p class="sn-fig-src"><span>Sources</span> <a class="cite" href="#ref-lus" data-ref="lus">Gamified lung ultrasound study<sup class="cite-n">3</sup></a></p>
+          </figure>
+        </section>
+
+        <section class="mf-wrap mf-figure-wrap" aria-label="Figure 02">
+          <figure class="ig" id="fig-02">
+            <p class="ig-num">Fig 02</p>
+            <p class="sn-fig-title">Twenty institutions trained one model without moving their records.</p>
+            <ul class="sn-stats">
+              <li><span class="sn-stat-v">16,148</span><span class="sn-stat-l">COVID-19 cases</span></li>
+              <li><span class="sn-stat-v">20</span><span class="sn-stat-l">Institutions</span></li>
+              <li><span class="sn-stat-v">24 / 72h</span><span class="sn-stat-l">Oxygen-support horizons predicted</span></li>
+            </ul>
+            <p class="sn-fig-note">Inputs combined chest X-rays, laboratory results, vital signs and age. Each site kept its data; only model updates travelled.</p>
+            <p class="sn-fig-src"><span>Sources</span> <a class="cite" href="#ref-exam" data-ref="exam">Nature Medicine, 2021<sup class="cite-n">6</sup></a></p>
+          </figure>
+        </section>
+
+        <section class="mf-wrap mf-grid" aria-label="Section 03 research">
+          <div></div>
+          <div class="mf-main">
+            <details class="research">
+              <summary>Supporting research (7)</summary>
+              <ol class="refs">
+                <li class="ref" id="ref-lus">
+                  <span class="ref-n">03</span>
+                  <div>
+                    <p class="ref-t">Gamified crowdsourcing of lung ultrasound annotation</p>
+                    <p class="ref-claim">21,154 annotations from 214 annotators in 2.5 days. Aggregated crowd annotations agreed with the reference standard better than individual experts on the study&rsquo;s B-line segmentation metrics.</p>
+                    <ul class="ref-srcs"><li><a href="https://arxiv.org/abs/2312.10198" target="_blank" rel="noopener noreferrer">arXiv 2312.10198 ↗</a></li></ul>
+                  </div>
+                </li>
+                <li class="ref" id="ref-midrc">
+                  <span class="ref-n">04</span>
+                  <div>
+                    <p class="ref-t">MIDRC mRALE Mastermind challenge</p>
+                    <p class="ref-claim">A Medical Imaging and Data Resource Center challenge asking teams to build AI that predicts COVID-19 severity from chest radiographs, scored against the modified Radiographic Assessment of Lung Edema (mRALE).</p>
+                    <ul class="ref-srcs"><li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12014941/" target="_blank" rel="noopener noreferrer">pmc.ncbi.nlm.nih.gov ↗</a></li></ul>
+                  </div>
+                </li>
+                <li class="ref" id="ref-luna25">
+                  <span class="ref-n">05</span>
+                  <div>
+                    <p class="ref-t">LUNA25</p>
+                    <p class="ref-claim">A 2025 lung nodule malignancy challenge built around roughly 4,000 annotated low-dose chest CT examinations.</p>
+                    <ul class="ref-srcs"><li><a href="https://luna25.grand-challenge.org/" target="_blank" rel="noopener noreferrer">luna25.grand-challenge.org ↗</a></li></ul>
+                  </div>
+                </li>
+                <li class="ref" id="ref-exam">
+                  <span class="ref-n">06</span>
+                  <div>
+                    <p class="ref-t">Federated learning for predicting clinical outcomes in patients with COVID-19</p>
+                    <p class="ref-claim">Predicted the oxygen support a patient would need 24 and 72 hours after arriving at hospital, including the risk of ventilation or death, from 16,148 cases across 20 institutions, combining chest X-rays, laboratory results, vital signs and age.</p>
+                    <ul class="ref-srcs"><li><a href="https://www.nature.com/articles/s41591-021-01506-3" target="_blank" rel="noopener noreferrer">nature.com/articles/s41591-021-01506-3 ↗</a></li></ul>
+                  </div>
+                </li>
+                <li class="ref" id="ref-antidote">
+                  <span class="ref-n">07</span>
+                  <div>
+                    <p class="ref-t">Antidote</p>
+                    <p class="ref-claim">A clinical trial matching service that helps patients find studies they may be eligible for.</p>
+                    <ul class="ref-srcs"><li><a href="https://www.antidote.me/" target="_blank" rel="noopener noreferrer">antidote.me ↗</a></li></ul>
+                  </div>
+                </li>
+                <li class="ref" id="ref-power">
+                  <span class="ref-n">08</span>
+                  <div>
+                    <p class="ref-t">Power</p>
+                    <p class="ref-claim">A clinical trial search platform that connects patients with recruiting studies.</p>
+                    <ul class="ref-srcs"><li><a href="https://www.withpower.com/" target="_blank" rel="noopener noreferrer">withpower.com ↗</a></li></ul>
+                  </div>
+                </li>
+                <li class="ref" id="ref-bio">
+                  <span class="ref-n">09</span>
+                  <div>
+                    <p class="ref-t">BIO Protocol</p>
+                    <p class="ref-claim">A decentralised science network in which patient and researcher communities form research collectives that fund and govern early-stage biotech projects.</p>
+                    <ul class="ref-srcs"><li><a href="https://www.bio.xyz/" target="_blank" rel="noopener noreferrer">bio.xyz ↗</a></li></ul>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </div>
+        </section>
+        </div>
+
+        <!-- 04 ------------------------------------------------------------ -->
+        <div class="mf-band" data-tone="light">
+        <div class="mf-wrap"><hr class="mf-rule" /></div>
+
+        <section class="mf-wrap mf-grid" id="s-approach" aria-labelledby="t-approach">
+          <div></div>
+          <div class="mf-main">
+            <p class="mf-kicker">Section 04</p>
+            <h2 id="t-approach" class="mf-h2">Sona will begin with imaging problems that can be measured.</h2>
+            <div class="mf-prose">
+              <p>
+                Sona will begin with specific imaging problems whose performance can be measured rigorously, including locating nodules, defining their boundaries, matching them across scans and measuring changes over time. The network will evaluate competing models against expert-reviewed cases, carefully controlled variations and fresh evidence, with improvements judged by their ability to generalise to unseen patients and imaging conditions.
+              </p>
+              <p>
+                This approach builds on established examples of collective progress. The <a class="cite" href="#ref-luna16" data-ref="luna16">LUNA16 challenge<sup class="cite-n">1</sup></a> demonstrated how a shared benchmark could support advances in pulmonary nodule detection and how combining competing systems could improve performance. <a class="cite" href="#ref-countmein" data-ref="countmein">Count Me In<sup class="cite-n">2</sup></a> demonstrated how patients could participate directly in cancer research by contributing clinical information and biological samples. Sona will bring these principles together through continuous evaluation, open development and patient participation.
+              </p>
+              <p>
+                Open models are central to this effort because they allow capability to spread beyond a single organisation. Researchers should be able to examine how a model performs, developers should be able to improve its weaknesses, and clinical teams should be able to evaluate its suitability for their communities. Publishing methods and limitations also makes independent scrutiny possible, strengthening the evidence on which trust depends.
+              </p>
+              <p>
+                We will turn validated capabilities into free tools that help patients explore their imaging histories, understand changes and prepare better questions for their clinicians. Patients who choose to contribute their scans and follow-up records will help assemble longitudinal evidence that isolated images cannot provide. With explicit consent, careful curation and strong privacy protections, these contributions can support better research and more useful models.
+              </p>
+              <p>
+                Our longer-term ambition is to give patient communities a greater role in determining which scientific problems receive attention and resources. Open research programmes could allow communities to support new teams through transparent budgets and independently verified milestones, while shared forums could help researchers identify questions that matter most to patients. Where clinically appropriate, supervised individual studies could also help people investigate their own responses within a rigorous research framework.
+              </p>
+              <p class="mf-punch">
+                The integrity of this system will depend on its willingness to expose failure as openly as success.
+              </p>
+              <p>
+                Contributors must be able to reproduce results, identify errors and publish evidence that overturns a promising hypothesis. Every verified correction will strengthen the shared body of knowledge and improve the foundations on which others build.
+              </p>
+            </div>
+          </div>
+        </section>
+        </div>
+
+        <!-- 05 ------------------------------------------------------------ -->
+        <div class="mf-band" data-tone="dark">
+        <div class="mf-wrap"><hr class="mf-rule" /></div>
+
+        <section class="mf-wrap mf-grid" id="s-tools" aria-labelledby="t-tools">
+          <div></div>
+          <div class="mf-main">
+            <p class="mf-kicker">Section 05</p>
+            <h2 id="t-tools" class="mf-h2">Sona will turn these beliefs into tools people can use.</h2>
+            <ul class="beliefs">
+              <li>
+                <strong>Build open medical imaging models.</strong> Start with measurable challenges: find nodules, match them across scans and measure growth. Continuously test models against fresh evidence and reward verified improvements.
+              </li>
+              <li>
+                <strong>Return progress to patients.</strong> Package validated capabilities into free tools that help people understand their scans, track changes and ask better clinical questions.
+              </li>
+              <li>
+                <strong>Build a community that accumulates knowledge.</strong> Drawing on the participation models of Reddit, Quora and HairDAO, reward useful questions, sourced answers and constructive scrutiny. Use consented, curated contributions to improve AI while preserving the distinction between experience and established evidence.
+              </li>
+              <li>
+                <strong>Explore patient-backed research funding.</strong> Drawing lessons from <a class="cite" href="#ref-bio" data-ref="bio">BIO Protocol<sup class="cite-n">9</sup></a> and <a class="cite" href="#ref-pump" data-ref="pump">Pump.science<sup class="cite-n">10</sup></a>, enable communities to support drugs, hardware and software through transparent budgets, clear milestones and accountable teams.
+              </li>
+              <li>
+                <strong>Support rigorous individual learning.</strong> Where appropriate, help patients and clinicians organise supervised N-of-1 studies, including randomised crossover or placebo comparisons when feasible. Individual insight must rest on sound study design.
+              </li>
+              <li>
+                <strong>Make participation worth sustaining.</strong> Use tokens to reward consistent contributions and follow-up. Offer voluntary accountability and positive reinforcement for healthy habits, without rewarding fabricated outcomes or unsafe behaviour.
+              </li>
+              <li>
+                <strong>Connect global effort to shared benefit.</strong> A contribution from one patient, a breakthrough from one researcher and an improvement from one developer should expand what humanity can achieve together.
+              </li>
+            </ul>
+            <details class="research">
+              <summary>Supporting research (1)</summary>
+              <ol class="refs">
+                <li class="ref" id="ref-pump">
+                  <span class="ref-n">10</span>
+                  <div>
+                    <p class="ref-t">Pump.science</p>
+                    <p class="ref-claim">A community-funded research platform in which participants back experiments on candidate longevity compounds and follow the results as they are published.</p>
+                    <ul class="ref-srcs"><li><a href="https://pump.science/" target="_blank" rel="noopener noreferrer">pump.science ↗</a></li></ul>
+                  </div>
+                </li>
+              </ol>
+            </details>
+          </div>
+        </section>
+        </div>
+
+        <!-- Close --------------------------------------------------------- -->
+        <div class="mf-band" data-tone="light">
+        <section class="mf-wrap mf-grid" aria-labelledby="close-title">
+          <div></div>
+          <div class="mf-main">
+            <p class="mf-kicker">In closing</p>
+            <h2 id="close-title" class="mf-h2">Discoveries made anywhere should improve care everywhere.</h2>
+            <div class="mf-prose">
+              <p>
+                Legacy science too often moves at the pace of committees, funding cycles and institutional negotiations, while patients experience the consequences of delay every day. Population-level evidence remains essential, but patients increasingly expect that knowledge to help explain their individual circumstances. Institutions will earn their trust by making evidence understandable, participation meaningful and progress accessible.
+              </p>
+              <p>
+                Sona will build the infrastructure for that participation, beginning with open medical imaging models and expanding through demonstrated usefulness. We invite researchers, clinicians, developers and patient communities to help create a system in which discoveries made anywhere can improve care everywhere, and humanity&rsquo;s collective knowledge becomes a capability more people can use.
+              </p>
+            </div>
+            <p class="mf-sign">
+              Jack Ai-Leung<br />
+              <span>On behalf of Sona</span>
+            </p>
+          </div>
+        </section>
+
+        <!-- Closing call -------------------------------------------------- -->
+        <section class="mf-close" id="close">
+          <div class="mf-wrap mf-grid">
+            <div></div>
+            <div class="mf-main">
+              <h2 class="mf-close-title">Build medical intelligence in the open.</h2>
+              <div class="mf-actions">
+                <a class="mf-btn mf-btn--solid" href="#s-tools">See what we will build</a>
+                <a class="mf-btn mf-btn--ghost" href="#s-evidence">Read the evidence</a>
+              </div>
+            </div>
+          </div>
+        </section>
+        </div>
+      </article>
+    </main>
+
+    <footer class="border-t border-paper/16 bg-footer pt-20 pb-8">
+      <div class="wrap flex flex-col gap-14 xl:gap-23">
+        <a class="sn-mark sn-mark--lg" href="#top" aria-label="Sona, back to top"><i aria-hidden="true"></i>SONA</a>
+        <div
+          class="flex flex-col gap-3 border-t border-paper/16 pt-4.5 font-mono text-[9px] font-medium tracking-legal text-paper/42 uppercase md:flex-row md:justify-between"
+        >
+          <p>&copy; 2026 Sona</p>
+          <p>Building medical intelligence together.</p>
+        </div>
+      </div>
+    </footer>
+    <script src="citations.js" defer></script>
+    <script src="toc.js" defer></script>
+    <script type="module">
+      const els = document.querySelectorAll("[data-reveal]");
+      if (els.length) {
+        const n = Math.min(80, Math.round(window.innerHeight / 5));
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries)
+              if (e.isIntersecting) (e.target.setAttribute("data-revealed", ""), io.unobserve(e.target));
+          },
+          { rootMargin: `0px 0px -${n}px 0px` },
+        );
+        els.forEach((e) => io.observe(e));
+      }
+    </script>
+  </body>
+</html>

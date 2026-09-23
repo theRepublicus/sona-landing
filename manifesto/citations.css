@@ -1,0 +1,230 @@
+/* Inline citations.
+   Every concept with research behind it is an anchor into the reference list
+   at the foot of the page, so the apparatus works with no JavaScript at all.
+   The script then upgrades those anchors to hover and focus cards. */
+
+.cite {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--color-signal);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  text-decoration-skip-ink: none;
+  cursor: help;
+  transition: background 0.15s ease;
+}
+
+.cite:hover,
+.cite[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--color-signal) 9%, transparent);
+}
+
+.cite:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+.cite-n {
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-signal-deep);
+  padding-left: 0.15em;
+  text-decoration: none;
+  vertical-align: super;
+}
+
+/* The card ---------------------------------------------------------------- */
+
+.cite-card {
+  position: absolute;
+  z-index: 60;
+  width: min(30rem, calc(100vw - 2rem));
+  padding: 1rem 1.15rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-sheet-ink);
+  border-top: 3px solid var(--color-signal);
+  box-shadow: 0 18px 40px -20px rgb(0 0 0 / 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s;
+}
+
+.cite-card[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.cite-card-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  line-height: 1;
+  color: var(--color-sheet-ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cite-card-close { display: inline-flex; }
+  .cite-card-t { padding-right: 2.25rem; }
+}
+
+.cite-card-label {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-signal-deep);
+  margin: 0;
+}
+
+.cite-card-t {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-sheet-ink);
+  margin: 0.3rem 0 0;
+}
+
+.cite-card-claim {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-sheet-ink) 80%, var(--color-paper));
+  margin: 0.5rem 0 0;
+}
+
+.cite-card-srcs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  margin: 0.75rem 0 0;
+  padding: 0.7rem 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-sheet-ink) 14%, transparent);
+  list-style: none;
+}
+
+.cite-card-srcs a,
+.ref-srcs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0.25rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--color-signal-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.cite-card-srcs a:hover,
+.ref-srcs a:hover { color: var(--color-sheet-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cite-card { transition: opacity 0.01s, visibility 0.01s; transform: none; }
+}
+
+/* The reference list ------------------------------------------------------ */
+
+.refs {
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.ref {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-sheet-ink) 12%, transparent);
+  scroll-margin-top: 7.5rem;
+}
+
+.ref:target { background: color-mix(in srgb, var(--color-signal) 7%, transparent); }
+
+.ref-n {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-signal-deep);
+}
+
+.ref-t {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-sheet-ink);
+  margin: 0;
+}
+
+.ref-claim {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-sheet-ink) 78%, var(--color-paper));
+  margin: 0.3rem 0 0;
+  max-width: 72ch;
+}
+
+.ref-srcs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Per-section research disclosure ----------------------------------------- */
+
+.research {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  border-top: 1px solid color-mix(in srgb, var(--color-sheet-ink) 15%, transparent);
+}
+
+.research > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-signal-deep);
+  cursor: pointer;
+  list-style: none;
+}
+
+.research > summary::-webkit-details-marker { display: none; }
+
+.research > summary::before {
+  content: "+";
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.research[open] > summary::before { content: "\2212"; }
+.research > summary:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 2px; }

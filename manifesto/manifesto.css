@@ -1,0 +1,725 @@
+/* Manifesto page styles.
+   Appended after the compiled Tailwind sheet, which contains only the utility
+   classes the existing pages already use. The document layout here (offset
+   body column, thesis grid, hairline rules, sticky act rail) needs rules
+   Tailwind never generated, so it lives in plain CSS against the same
+   @theme tokens the rest of the site uses. */
+
+/* Newsreader, self-hosted alongside the site's other faces. The manifesto is
+   the only page that sets body copy in a serif: it is what makes the page read
+   as a document rather than another section, and it is the split both
+   reference letters use, sans display over serif prose. Latin subset only,
+   variable weight and optical size. */
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../fonts/newsreader-latin-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../fonts/newsreader-latin-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+}
+
+.mf-body {
+  background: var(--color-paper);
+  color: var(--color-sheet-ink);
+}
+
+/* The site header is fixed, so every in-page anchor needs to clear it. */
+.mf-body [id] {
+  scroll-margin-top: 7.5rem;
+}
+
+/* Clear the fixed header, with room for the masthead's tight leading. */
+.mf-article {
+  padding-top: clamp(8.5rem, 16vh, 13rem);
+}
+
+/* The shared header only paints its background once the page has scrolled
+   past 8px. On a cream page that leaves white nav text on cream at the top of
+   the document, so it stays solid here regardless of scroll position. */
+.mf-body [data-site-header] {
+  border-bottom-color: color-mix(in srgb, var(--color-sheet-ink) 12%, transparent);
+  background: var(--color-ink);
+}
+
+.mf-wrap {
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 5rem);
+}
+
+/* The page's one structural idea: a narrow left margin column that holds
+   metadata, contents and thesis numerals, and a wide column that holds the
+   prose. The margin is empty in the introduction and fills up in the theses. */
+.mf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem clamp(1.5rem, 4vw, 4rem);
+}
+
+@media (min-width: 64rem) {
+  .mf-grid {
+    grid-template-columns: minmax(0, 24%) minmax(0, 1fr);
+  }
+  .mf-grid > .mf-main {
+    grid-column: 2;
+  }
+}
+
+/* Masthead ------------------------------------------------------------- */
+
+.mf-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-signal);
+}
+
+.mf-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 7.6vw, 7.5rem);
+  line-height: 0.93;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  margin: clamp(1.5rem, 3vw, 2.75rem) 0 0;
+}
+
+.mf-standfirst {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 2vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--color-sheet-copy);
+  max-width: 46ch;
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+}
+
+.mf-meta {
+  display: grid;
+  /* Capped rather than 1fr: with two fields left, auto-fit stretched them to
+     half the page each and put a void between them. */
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 12rem));
+  justify-content: start;
+  gap: 1.25rem 2rem;
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.mf-meta dt {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-sheet-eyebrow);
+}
+
+.mf-meta dd {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  margin: 0.5rem 0 0;
+  color: var(--color-sheet-ink);
+}
+
+.mf-scrollcue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-sheet-eyebrow);
+}
+
+.mf-scrollcue span[aria-hidden] {
+  animation: mf-nudge 2.4s ease-in-out infinite;
+}
+
+@keyframes mf-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* Rules ---------------------------------------------------------------- */
+
+.mf-rule {
+  height: 1px;
+  border: 0;
+  margin: clamp(2.5rem, 5vw, 4.5rem) 0;
+  background: color-mix(in srgb, var(--color-sheet-ink) 16%, transparent);
+}
+
+.mf-rule--tight {
+  margin: clamp(1.75rem, 3vw, 2.5rem) 0;
+}
+
+/* Prose ---------------------------------------------------------------- */
+
+.mf-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-sheet-eyebrow);
+}
+
+.mf-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  margin: 1.25rem 0 0;
+}
+
+.mf-prose {
+  max-width: 68ch;
+}
+
+.mf-prose > p {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: clamp(1.1875rem, 1.25vw, 1.5rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-sheet-ink) 88%, var(--color-paper));
+  margin: 1.35em 0 0;
+}
+
+.mf-prose > p:first-child {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.mf-punch {
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.375rem, 2.6vw, 2.25rem) !important;
+  line-height: 1.14 !important;
+  letter-spacing: -0.03em;
+  color: var(--color-sheet-ink) !important;
+  margin-top: 1.75em !important;
+  max-width: 34ch;
+}
+
+/* Contents ------------------------------------------------------------- */
+
+.mf-contents {
+  position: sticky;
+  top: 7.5rem;
+  align-self: start;
+}
+
+/* Pinned to the page rather than to its own section, so it stays reachable the
+   whole way down. Left edge matches .mf-wrap's content edge: the same clamp,
+   plus the centring offset once the page is wider than its max width. */
+.mf-body { --toc-w: min(15rem, 21vw); }
+
+@media (min-width: 88rem) {
+  /* Pinned only once the reader is past the masthead. A rail fixed from load
+     lands on the title, which is exactly what it did. toc.js flips the flag at
+     the crossing; without JavaScript the rail simply stays in flow. */
+  .mf-contents[data-pinned="true"] {
+    position: fixed;
+    top: 8.5rem;
+    left: max(clamp(1.25rem, 4vw, 5rem), calc(50vw - 840px + clamp(1.25rem, 4vw, 5rem)));
+    width: var(--toc-w);
+    max-height: calc(100vh - 12rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 30;
+  }
+
+  /* The rail no longer occupies grid space, so the column is a spacer. */
+  .mf-grid > .mf-contents { grid-column: 1; }
+
+  /* Figure sections run the full wrap width, which is exactly where the pinned
+     rail sits, so they are inset clear of it. Still leaves more than 960px of
+     frame at 1280 and up, so the diagrams do not start panning because of it. */
+  .mf-figure-wrap { padding-left: calc(clamp(1.25rem, 4vw, 5rem) + var(--toc-w) + 2.75rem); }
+}
+
+.mf-contents a[aria-current="true"] {
+  color: var(--color-signal);
+  font-weight: 600;
+}
+
+.mf-contents a[aria-current="true"] b { color: var(--color-signal); }
+
+@media (max-width: 63.99rem) {
+  .mf-contents { position: static; }
+
+  /* Stacked, the contents list put 400px of links between the masthead and
+     the first line of argument. The reader gets the argument first instead. */
+  .mf-grid > .mf-contents { order: 2; margin-top: 2.5rem; }
+  .mf-grid > .mf-main { order: 1; }
+}
+
+.mf-contents h2 {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-sheet-eyebrow);
+}
+
+.mf-contents ol {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid color-mix(in srgb, var(--color-sheet-ink) 12%, transparent);
+}
+
+.mf-contents li {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-sheet-ink) 12%, transparent);
+}
+
+.mf-contents a {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--color-sheet-copy);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.mf-contents a:hover,
+.mf-contents a:focus-visible {
+  color: var(--color-signal);
+}
+
+.mf-contents a b {
+  flex: none;
+  font-weight: 600;
+  color: var(--color-signal);
+}
+
+/* Acts and theses ------------------------------------------------------ */
+
+.mf-act {
+  margin-top: clamp(3rem, 6vw, 6rem);
+}
+
+.mf-act-head {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  border-top: 2px solid var(--color-sheet-ink);
+  padding-top: 1rem;
+}
+
+/* The corner-bracket squares used on the home page's sheet cards, kept here
+   at act level so nine theses do not turn into a field of dots. */
+.mf-act-head::before,
+.mf-act-head::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-signal);
+}
+
+.mf-act-head::before { left: 0; }
+.mf-act-head::after { right: 0; }
+
+.mf-act-num {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-signal);
+}
+
+.mf-act-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 1.9vw, 1.625rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.mf-thesis {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem clamp(1.5rem, 4vw, 4rem);
+  padding: clamp(1.75rem, 3.5vw, 3rem) 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-sheet-ink) 12%, transparent);
+  scroll-margin-top: 7rem;
+}
+
+@media (min-width: 64rem) {
+  .mf-thesis {
+    grid-template-columns: minmax(0, 24%) minmax(0, 1fr);
+  }
+}
+
+.mf-thesis-num {
+  font-family: var(--font-mono);
+  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--color-signal);
+}
+
+.mf-thesis-claim {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.375rem, 2.5vw, 2.375rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.mf-thesis-body {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: clamp(1.0625rem, 1.1vw, 1.3125rem);
+  line-height: 1.52;
+  color: color-mix(in srgb, var(--color-sheet-ink) 78%, var(--color-paper));
+  max-width: 62ch;
+  margin: 1.1rem 0 0;
+}
+
+/* Signature ------------------------------------------------------------ */
+
+.mf-sign {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--color-sheet-ink);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-sheet-ink);
+}
+
+.mf-sign span {
+  color: var(--color-sheet-eyebrow);
+}
+
+.mf-flywheel {
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1vw, 0.875rem);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: var(--color-sheet-ink);
+  background: var(--color-sheet);
+  border: 1px solid var(--color-sheet-edge);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  margin-top: 2rem;
+}
+
+.mf-flywheel b {
+  color: var(--color-signal);
+  font-weight: 400;
+}
+
+/* Closing call --------------------------------------------------------- */
+
+.mf-close {
+  margin-top: clamp(3.5rem, 7vw, 7rem);
+  padding: clamp(2.5rem, 6vw, 6rem) 0 clamp(3rem, 7vw, 7rem);
+  border-top: 1px solid color-mix(in srgb, var(--color-sheet-ink) 16%, transparent);
+}
+
+.mf-close-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.875rem, 5.2vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.mf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.mf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.mf-btn--solid {
+  background: var(--color-signal);
+  color: var(--color-white);
+  border: 1px solid var(--color-signal);
+}
+
+.mf-btn--solid:hover,
+.mf-btn--solid:focus-visible {
+  background: var(--color-signal-deep);
+  border-color: var(--color-signal-deep);
+}
+
+.mf-btn--ghost {
+  background: transparent;
+  color: var(--color-sheet-ink);
+  border: 1px solid color-mix(in srgb, var(--color-sheet-ink) 28%, transparent);
+}
+
+.mf-btn--ghost:hover,
+.mf-btn--ghost:focus-visible {
+  border-color: var(--color-sheet-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mf-scrollcue span[aria-hidden] { animation: none; }
+}
+
+/* Belief lists ---------------------------------------------------------- */
+
+.beliefs {
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 68ch;
+}
+
+.beliefs > li {
+  position: relative;
+  padding: 0 0 0 1.5rem;
+  margin-top: 1.4em;
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: clamp(1.0625rem, 1.15vw, 1.3125rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-sheet-ink) 86%, var(--color-paper));
+}
+
+.beliefs > li:first-child { margin-top: 0; }
+
+.beliefs > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.5rem;
+  height: 2px;
+  background: var(--color-signal);
+}
+
+.beliefs strong,
+.mf-prose strong {
+  font-weight: 600;
+  color: var(--color-sheet-ink);
+}
+
+
+
+/* Contents panel on narrow screens --------------------------------------- */
+
+.toc-toggle {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 70;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+  background: var(--color-sheet-ink);
+  border: 1px solid var(--color-sheet-ink);
+  box-shadow: 0 10px 28px -14px rgb(0 0 0 / 0.5);
+  cursor: pointer;
+}
+
+.toc-toggle { transition: transform 0.2s ease, opacity 0.2s ease; }
+
+.toc-toggle[data-away="true"] {
+  transform: translateY(160%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc-toggle { transition: none; }
+}
+
+.toc-toggle[hidden] { display: none; }
+.toc-toggle:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 3px; }
+.toc-toggle[aria-expanded="true"] { background: var(--color-signal); border-color: var(--color-signal); }
+
+@media (max-width: 87.99rem) {
+  .mf-contents[data-panel="true"] {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 69;
+    max-height: 72vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin: 0;
+    padding: 1.25rem 1.25rem 5rem;
+    background: var(--color-paper);
+    border-top: 2px solid var(--color-sheet-ink);
+    box-shadow: 0 -20px 40px -24px rgb(0 0 0 / 0.5);
+  }
+
+  /* Bigger targets in the panel than in the inline list. */
+  .mf-contents[data-panel="true"] a { padding: 0.75rem 0; font-size: 0.8125rem; }
+}
+
+/* --- Alternating bands ---------------------------------------------------
+   Each section and its figure sit in one full-bleed band, and the bands
+   alternate. A dark band does not restyle anything: it redeclares the colour
+   tokens inside its own scope, so every rule already written in terms of them
+   flips with it, charts and supplied diagrams included. The only tokens that
+   need naming twice are the ones resolved further up the tree (--ch-*), since
+   a custom property inherits its computed value, not its definition. */
+
+.mf-band {
+  padding-block: clamp(2.25rem, 5vw, 4.25rem);
+}
+
+/* The band edge is the separator, so the rule that used to do that job goes. */
+.mf-band > .mf-wrap:first-child .mf-rule { display: none; }
+
+[data-tone="dark"] {
+  --color-paper: #0f1a2a;
+  --color-sheet: #16243a;
+  --color-sheet-ink: #f3f6fb;
+  --color-sheet-copy: #b4c0cf;
+  --color-sheet-eyebrow: #95a3b5;
+  --color-sheet-edge: #2e3e56;
+  --color-signal: #8fb6ea;
+  --color-signal-deep: #b5cff3;
+
+  --ch-ink: #f3f6fb;
+  --ch-muted: #8d9bad;
+  --ch-hair: color-mix(in srgb, #f3f6fb 22%, transparent);
+  --ch-mark: #8fb6ea;
+  --ch-ink-red: #b5cff3;
+  --ch-surface: #0f1a2a;
+
+  background: #0f1a2a;
+  color: #f3f6fb;
+}
+
+/* The three supplied diagrams carry their own greys. */
+[data-tone="dark"] .ig svg {
+  --ig-muted: #8d9bad;
+  --ig-hair: #46566d;
+}
+
+/* The rail and its button are fixed, so they cannot inherit a band. toc.js
+   tells them which one they are over. */
+.toc-toggle[data-tone="dark"] {
+  --color-paper: #0f1a2a;
+  --color-sheet-ink: #f3f6fb;
+  --color-sheet-copy: #b4c0cf;
+  --color-sheet-eyebrow: #95a3b5;
+  --color-signal: #8fb6ea;
+}
+
+.toc-toggle[data-tone="dark"] {
+  color: #0f1a2a;
+  background: #f3f6fb;
+  border-color: #f3f6fb;
+}
+
+.toc-toggle[data-tone="dark"][aria-expanded="true"] {
+  color: #f3f6fb;
+  background: #8fb6ea;
+  border-color: #8fb6ea;
+}
+
+/* Once pinned, the rail is a card rather than bare text on the page. It has to
+   be: it is taller than the gap between two bands, so at a seam it straddles
+   both, and a row whose text crosses the seam cannot be inked either way. The
+   card gives every row one ground, and the tone fades rather than snapping. */
+.mf-contents[data-pinned="true"] {
+  margin-left: -1.15rem;
+  padding: 1rem 1.15rem 1.1rem;
+  border-radius: 0.875rem;
+  background: var(--color-paper);
+  border: 1px solid color-mix(in srgb, var(--color-sheet-ink) 10%, transparent);
+  box-shadow: 0 24px 48px -32px rgb(0 0 0 / 0.45);
+  transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+
+.mf-contents h2,
+.mf-contents ol,
+.mf-contents li,
+.mf-contents a,
+.mf-contents a b {
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+
+.mf-contents[data-tone="dark"] {
+  --color-sheet-ink: #f3f6fb;
+  --color-sheet-copy: #b4c0cf;
+  --color-sheet-eyebrow: #95a3b5;
+  --color-signal: #8fb6ea;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mf-contents,
+  .mf-contents * { transition: none; }
+}
+
+/* A citation card is appended to the body, so it is told the same way. */
+.cite-card[data-tone="dark"] {
+  --color-paper: #16243a;
+  --color-sheet-ink: #f3f6fb;
+  --color-sheet-copy: #b4c0cf;
+  --color-sheet-eyebrow: #95a3b5;
+  --color-signal: #8fb6ea;
+  --color-signal-deep: #b5cff3;
+  color: #f3f6fb;
+}
